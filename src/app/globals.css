@@ -1,42 +1,1479 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  scrollbar-width: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@font-face {
+  font-family: "LexendExtraBold";
+  src: url("../../public/Fonts/Lexend/Lexend-ExtraBold.ttf");
+  /* format("truetype"); */
+}
+
+@font-face {
+  font-family: "LexendBold";
+  src: url("../../public/Fonts/Lexend/Lexend-Bold.ttf");
+  /* format("truetype"); */
+}
+
+@font-face {
+  font-family: "LexendLight";
+  src: url("../../public/Fonts/Lexend/Lexend-Light.ttf");
+  /* format("truetype"); */
+}
+
+/* Sidebar Styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background: #fff;
+  color: #007bff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.07);
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.93rem;
+  border-right: 1px solid #007bff;
+}
+.sidebar.collapsed {
+  width: 70px;
+}
+.sidebar-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 0 0 20px;
+}
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  justify-content: flex-start;
+}
+.sidebar-logo img {
+  max-height: 50px;
+  max-width: 100%;
+}
+.sidebar-collapse-btn {
+  position: absolute;
+  top: 12px;
+  right: -5px;
+  background: #fff;
+  border: none;
+  outline: none;
+  color: #007bff;
+  font-size: 1.5em;
+  padding: 4px 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.2s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar.collapsed .sidebar-collapse-btn {
+  display: none;
+}
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 10px;
+  padding: 10px;
+}
+.sidebar-nav-item {
+  position: relative;
+}
+.sidebar-nav-link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  color: #007bff;
+  font-size: 0.93rem;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-align: left;
+  gap: 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  margin: 2px 0;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: "LexendBold";
+}
+.sidebar-nav-link:hover,
+.sidebar-nav-link.active,
+.sidebar-nav-item.active > .sidebar-nav-link {
+  background: #007bff;
+  color: #fff;
+}
+.sidebar-icon {
+  font-size: 1.1em;
+  min-width: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sidebar-label {
+  white-space: nowrap;
+  flex: 1;
+  font-size: 0.93em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-dropdown-arrow {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.sidebar-dropdown {
+  background: #f8faff;
+  border-left: 2px solid #007bff;
+  margin: 0;
+  padding: 0 0 0 18px;
+  list-style: none;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.sidebar-dropdown-item .sidebar-nav-link {
+  padding: 8px 16px;
+  font-size: 0.91em;
+  color: #007bff;
+  border-radius: 5px;
+  margin: 2px 0;
+  font-family: "LexendLight";
+}
+.sidebar-dropdown-item .sidebar-nav-link:hover,
+.sidebar-dropdown-item .sidebar-nav-link.active,
+.sidebar-dropdown-item.active .sidebar-nav-link {
+  background: #007bff;
+  color: #fff;
+}
+.sidebar.locked-open {
+  /* This class can be toggled in JS for future, if needed */
+}
+.sidebar.collapsed .sidebar-label,
+.sidebar.collapsed .sidebar-dropdown,
+.sidebar.collapsed .sidebar-dropdown-arrow {
+  display: none;
+}
+.sidebar.collapsed .sidebar-nav-link {
+  justify-content: center;
+  padding: 10px 0;
+}
+.sidebar.collapsed .sidebar-dropdown-item .sidebar-nav-link {
+  padding: 8px 0;
+}
+.sidebar-hamburger {
+  display: none;
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1300;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.6em;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.sidebar-overlay {
+  display: none;
+}
+@media (max-width: 900px) {
+  .sidebar {
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 220px;
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+      width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.91rem;
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.18);
+  }
+  .sidebar-hamburger {
+    display: block;
+  }
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.18);
+    z-index: 1100;
+    transition: background 0.2s;
   }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+/* App Layout Styles */
+.app-layout {
+  display: flex;
+  /* width: 100vw; */
+  /* min-height: 100vh; */
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.main-content {
+  transition: margin-left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
 }
 
-* {
-  box-sizing: border-box;
+/* Only add margin when sidebar is locked open */
+.main-content.sidebar-fixed {
+  margin-left: 250px; /* width of expanded sidebar */
+}
+
+/* When sidebar is collapsed */
+.sidebar.collapsed ~ .main-content {
+  margin-left: 70px;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+  /* width: 100%;
+  max-width: 1500px; */
+  margin: 0 auto;
+  padding: 32px;
+  background: #fff;
+  /* border-radius: 18px; */
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+}
+.dashboard-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 1.5em;
+}
+
+.dashboard-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.25em;
+  font-family: "LexendBold";
+}
+
+.referral-link {
+  font-size: 0.95em;
+  margin-bottom: 1em;
+  font-family: LexendLight;
+}
+
+@media (max-width: 700px) {
+  .dashboard-header h1 {
+    font-size: 1.2rem;
+  }
+  .referral-link {
+    font-size: 0.6em;
+  }
+  .btn-primary {
+    padding: 5px 5px;
+    font-size: 0.7em;
+  }
+  .btn-outline {
+    padding: 5px 5px;
+    font-size: 0.7em;
+  }
+  .user-info-card {
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+  .user-info-row {
+    gap: 2px;
+  }
+  .user-avatar {
+    width: 25px;
+    height: 25px;
+  }
+  .user-username,
+  .user-role {
+    font-size: 0.7em;
+  }
+  .create-account-card {
+    padding: 5px;
+    margin-top: 5px;
+  }
+  .virtual-account-info h2 {
+    font-size: 0.8em;
+  }
+  .account-details {
+    padding: 5px;
+    gap: 5px;
+  }
+
+  .account-details div {
+    gap: 2px;
+    font-size: 0.8em;
+  }
+  .bank-logo {
+    display: none;
+  }
+}
+
+.dashboard-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1.5em;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-family: LexendBold;
+  font-size: 0.9em;
+  border: 2px solid #007bff;
+}
+.btn-primary:hover {
+  background: #fff;
+  color: #007bff;
+  border: 2px solid #007bff;
+}
+.btn-outline {
+  background: #fff;
+  color: #007bff;
+  border: 2px solid #007bff;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-family: LexendBold;
+  font-size: 0.9em;
+}
+.btn-outline:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+.user-info-card {
+  background: #007bff;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
+  width: 100%;
+}
+.user-info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.user-avatar {
+  background: #86a4f0;
+  color: #fff;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  font-family: LexendExtraBold;
+}
+.user-username,
+.user-role {
+  font-family: LexendBold;
+  color: #fff;
+}
+.create-account-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.virtual-account-info {
+  margin-bottom: 32px;
+}
+.virtual-account-info h2 {
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  font-family: LexendBold;
+}
+.account-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #007bff;
+  border-radius: 10px;
+  padding: 16px;
+  gap: 18px;
+  width: 100%;
+}
+.account-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: #fff;
+}
+.bank-logo {
+  width: 150px;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+.quick-actions-section h2 {
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  font-family: LexendBold;
+}
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+}
+.quick-action-card {
+  background: #007bff;
+  border-radius: 12px;
+  padding: 18px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.03);
+}
+.quick-action-card:hover {
+  background: #86a4f0;
+  color: #fff;
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 4px 16px rgba(0, 123, 255, 0.1);
+}
+.quick-action-card img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: #fff;
+}
+.quick-action-card span {
+  font-family: LexendBold;
+}
+
+@media (max-width: 700px) {
+  .dashboard-container {
+    padding: 12px 2vw;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .quick-actions-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .account-details img,
+  .quick-action-card img {
+    width: 48px;
+    height: 48px;
+  }
+}
+@media (max-width: 480px) {
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Modal Styles */
+.modal-backdrop {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.25s;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 123, 255, 0.15);
+  padding: 32px 24px 24px 24px;
+  min-width: 320px;
+  max-width: 95vw;
+  position: relative;
+  animation: popIn 0.2s;
+}
+@keyframes popIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #007bff;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 1;
+  /* font-family: LexendBold; */
+  font-weight: 600;
+  font-size: 2.5em;
+  overflow: hidden;
+}
+
+/* Intro Modal Styles */
+
+.intro-modal {
+  background: linear-gradient(135deg, #fff 80%, #eaf3ff 100%);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(0, 123, 255, 0.18),
+    0 1.5px 8px rgba(0, 0, 0, 0.07);
+  padding: 38px 24px 28px 24px;
+  min-width: 340px;
+  max-width: 95vw;
+  position: relative;
+  font-family: "LexendBold", Arial, sans-serif;
+  color: #222;
+  text-align: center;
+  border: 2px solid #007bff;
+  animation: popIn 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes popIn {
+  from {
+    transform: scale(0.93);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.intro-logo-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.intro-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0, 123, 255, 0.1);
+  object-fit: cover;
+  border: 2.5px solid #007bff;
+}
+
+.intro-title {
+  color: #007bff;
+  font-family: "LexendExtraBold", Arial, sans-serif;
+  font-size: 1.5em;
+  margin-bottom: 0.3em;
+  margin-top: 0;
+}
+
+.brand {
+  color: #007bff;
+  font-family: "LexendExtraBold", Arial, sans-serif;
+}
+
+.intro-lead {
+  font-family: "LexendLight", Arial, sans-serif;
+  font-size: 1.08em;
+  margin-bottom: 1.2em;
+  color: #333;
+}
+
+.intro-list {
+  list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 1.5em 0;
+  font-family: "LexendBold", Arial, sans-serif;
+  color: #007bff;
+  font-size: 1.08em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.intro-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 32px;
+  font-weight: 600;
+  font-family: "LexendBold", Arial, sans-serif;
+  font-size: 1.08em;
+  margin-top: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+  transition: background 0.18s;
+}
+.intro-btn:hover {
+  background: #0056b3;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #007bff;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 1;
+}
+
+@media (max-width: 500px) {
+  .intro-modal {
+    padding: 18px 6vw 18px 6vw;
+    min-width: 0;
+  }
+  .intro-title {
+    font-size: 1.1em;
+  }
+  .intro-logo {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Verify NIN Styles */
+
+.verifynin-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  font-family: "LexendBold", Arial, sans-serif;
+}
+.verifynin-subtext {
+  color: #555;
+  margin-bottom: 18px;
+}
+.verifynin-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.verifynin-option {
+  background: #f8faff;
+  border: 2px solid #e0eaff;
+  border-radius: 10px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.08em;
+  cursor: pointer;
+  transition: border 0.2s, background 0.2s;
+}
+.verifynin-option.selected,
+.verifynin-option:hover {
+  border: 2px solid #007bff;
+  background: #eaf3ff;
+}
+.verifynin-option input[type="radio"] {
+  accent-color: #007bff;
+  width: 1.2em;
+  height: 1.2em;
+}
+.verifynin-form {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.verifynin-amount {
+  font-size: 1.08em;
+  margin-bottom: 6px;
+}
+.verifynin-amount-value {
+  color: #007bff;
+  font-weight: bold;
+}
+.verifynin-alert {
+  background: #fff0f0;
+  color: #d32f2f;
+  border: 1.5px solid #d32f2f;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.98em;
+  justify-content: space-between;
+}
+.btn-fund {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1em;
+}
+.verifynin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.verifynin-field label {
+  font-size: 0.98em;
+  color: #222;
+  margin-bottom: 2px;
+}
+.verifynin-field input,
+.verifynin-field select {
+  padding: 10px 12px;
+  border: 1.5px solid #e0eaff;
+  border-radius: 7px;
+  font-size: 1em;
+  font-family: "LexendLight", Arial, sans-serif;
+  background: #f8faff;
+  outline: none;
+  transition: border 0.2s;
+}
+.verifynin-field input:focus,
+.verifynin-field select:focus {
+  border: 1.5px solid #007bff;
+}
+.verifynin-summary {
+  margin: 10px 0 0 0;
+  font-size: 0.98em;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.btn-primary-verify {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 1.08em;
+  cursor: pointer;
+  margin-top: 10px;
+  align-self: flex-end;
+  transition: background 0.2s;
+}
+.btn-primary-verify:disabled {
+  background: #b3d1ff;
+  cursor: not-allowed;
+}
+.modal-backdrop {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 123, 255, 0.15);
+  padding: 32px 24px 24px 24px;
+  min-width: 320px;
+  max-width: 95vw;
+  position: relative;
+  font-family: "LexendBold", Arial, sans-serif;
+  color: #222;
+  text-align: center;
+  border: 2px solid #007bff;
+}
+
+/* Set Transaction Pin Styles */
+
+.setpin-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.06);
+  font-family: "LexendBold", Arial, sans-serif;
+}
+.setpin-subtext {
+  color: #555;
+  margin-bottom: 18px;
+}
+.setpin-form {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.setpin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.setpin-field label {
+  font-size: 0.98em;
+  color: #222;
+  margin-bottom: 2px;
+}
+.setpin-field input {
+  padding: 10px 12px;
+  border: 1.5px solid #e0eaff;
+  border-radius: 7px;
+  font-size: 1em;
+  font-family: "LexendLight", Arial, sans-serif;
+  background: #f8faff;
+  outline: none;
+  transition: border 0.2s;
+}
+.setpin-field input:focus {
+  border: 1.5px solid #007bff;
+}
+.setpin-error {
+  color: #d32f2f;
+  background: #fff0f0;
+  border: 1.5px solid #d32f2f;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.98em;
+}
+.setpin-success {
+  color: #007bff;
+  background: #eaf3ff;
+  border: 1.5px solid #007bff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.98em;
+}
+.btn-primary-setpin {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  font-size: 1.08em;
+  cursor: pointer;
+  margin-top: 10px;
+  align-self: flex-end;
+  transition: background 0.2s;
+  align-self: flex-end;
+}
+.btn-primary-setpin:disabled {
+  background: #b3d1ff;
+  cursor: not-allowed;
+}
+
+.setpin-field select {
+  padding: 10px 12px;
+  border: 1.5px solid #e0eaff;
+  border-radius: 7px;
+  font-size: 1em;
+  font-family: "LexendLight", Arial, sans-serif;
+  background: #f8faff;
+  outline: none;
+  transition: border 0.2s;
+  color: #222;
+  appearance: none; /* Remove default arrow for custom look */
+}
+
+.setpin-field select:focus {
+  border: 1.5px solid #007bff;
+  background: #fff;
+}
+
+.setpin-field select option {
+  color: #222;
+  background: #fff;
+}
+
+@media (max-width: 600px) {
+  .verifynin-container,
+  .setpin-container {
+    max-width: 100vw;
+    padding: 16px 4vw;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .verifynin-container h1,
+  .setpin-container h1 {
+    font-size: 1.3em;
+  }
+  .verifynin-subtext,
+  .setpin-subtext {
+    font-size: 0.98em;
+  }
+  .verifynin-option,
+  .setpin-field input,
+  .setpin-field label,
+  .verifynin-field input,
+  .verifynin-field label,
+  .verifynin-field select {
+    font-size: 0.97em;
+    padding: 8px 8px;
+  }
+  .btn-primary-setpin {
+    font-size: 1em;
+    padding: 8px 16px;
+  }
+  .verifynin-form,
+  .setpin-form {
+    gap: 10px;
+  }
+  .verifynin-alert,
+  .setpin-error,
+  .setpin-success {
+    font-size: 0.95em;
+    padding: 7px 8px;
+  }
+}
+@media (max-width: 400px) {
+  .verifynin-container,
+  .setpin-container {
+    padding: 8px 2vw;
+  }
+  .verifynin-container h1,
+  .setpin-container h1 {
+    font-size: 1.08em;
+  }
+  .btn-primary-setpin {
+    font-size: 0.97em;
+    padding: 7px 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  .main-content,
+  .main-content.sidebar-fixed {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+}
+
+.service-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+.sleek-service-header {
+  background: #f8faff;
+  border-radius: 12px;
+  padding: 18px 16px;
+  box-shadow: 0 1px 6px rgba(0, 123, 255, 0.04);
+  margin-bottom: 18px;
+}
+.service-header-icon {
+  background: #eaf3ff;
+  border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.service-title {
+  color: #007bff;
+  font-family: "LexendExtraBold", Arial, sans-serif;
+  font-size: 1.35em;
+  margin: 0 0 2px 0;
+}
+.service-desc {
+  color: #555;
+  font-size: 1em;
+  font-family: "LexendLight", Arial, sans-serif;
+}
+.ninvalidation-row {
+  display: flex;
+  gap: 18px;
+}
+.ninvalidation-row .setpin-field {
+  flex: 1;
+}
+@media (max-width: 700px) {
+  .ninvalidation-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+/* Transaction History Styles */
+.transaction-history-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 32px;
+  background: #fff;
+  font-family: "LexendLight", Arial, sans-serif;
+}
+.transaction-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+.transaction-search-box {
+  display: flex;
+  align-items: center;
+  background: #f8faff;
+  border-radius: 12px;
+  padding: 0 18px;
+  border: 1.5px solid #e0e0e0;
+  flex: 1;
+  min-width: 220px;
+  height: 54px;
+  box-shadow: 0 2px 8px #e0e0e022;
+}
+.transaction-search-icon {
+  color: #007bff;
+  margin-right: 12px;
+  font-size: 20px;
+}
+.transaction-search-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 18px;
+  flex: 1;
+  font-family: "LexendLight";
+  height: 40px;
+  color: #222;
+}
+.transaction-service-type-select-wrap {
+  min-width: 170px;
+}
+.transaction-service-type-select {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid #007bff;
+  font-family: "LexendLight";
+  font-size: 16px;
+  height: 54px;
+  background: #fff;
+  box-shadow: 0 2px 8px #e0e0e022;
+  color: #007bff;
+  font-weight: 600;
+}
+.transaction-date-sort-btn {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1.5px solid #007bff;
+  border-radius: 12px;
+  padding: 0 22px;
+  font-family: "LexendLight";
+  font-size: 16px;
+  cursor: pointer;
+  height: 54px;
+  box-shadow: 0 2px 8px #e0e0e022;
+  color: #007bff;
+  font-weight: 600;
+}
+.transaction-date-sort-icon {
+  margin-left: 10px;
+  font-size: 18px;
+  color: #007bff;
+  transition: transform 0.2s;
+}
+.transaction-date-sort-icon.desc {
+  transform: rotate(180deg);
+}
+.transaction-export-btn {
+  display: flex;
+  align-items: center;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 0 28px;
+  font-family: "LexendBold";
+  font-size: 16px;
+  cursor: pointer;
+  height: 54px;
+  box-shadow: 0 2px 8px #007bff22;
+}
+.transaction-export-icon {
+  margin-right: 12px;
+  font-size: 20px;
+}
+.transaction-table-wrap {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px #e0e0e033;
+  min-height: 320px;
+  padding: 0 0 8px 0;
+}
+.transaction-empty-state {
+  text-align: center;
+  padding: 64px 12px;
+  color: #aaa;
+  font-size: 20px;
+  font-family: "LexendLight";
+}
+.transaction-empty-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+.transaction-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 18px;
+  min-width: 600px;
+}
+.transaction-table-header {
+  background: #f8faff;
+  font-family: "LexendBold";
+  font-size: 16px;
+}
+.transaction-table-th {
+  border: none;
+  color: #007bff;
+  padding: 18px 12px 10px 12px;
+}
+.transaction-table-th.service {
+  text-align: left;
+  padding-left: 32px;
+}
+.transaction-table-th.amount {
+  text-align: right;
+  padding-right: 32px;
+}
+.transaction-table-th.status {
+  text-align: center;
+}
+.transaction-table-row {
+  background: #fff;
+  box-shadow: 0 2px 8px #e0e0e022;
+  border-radius: 16px;
+  font-size: 16px;
+  height: 72px;
+}
+.transaction-service-cell {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 18px 18px 32px;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+  vertical-align: middle;
+}
+.transaction-service-icon-wrap {
+  background: #eaf3ff;
+  border-radius: 50%;
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.transaction-service-info {
+  display: flex;
+  flex-direction: column;
+}
+.transaction-service-title {
+  font-family: "LexendBold";
+  font-size: 17px;
+  color: #007bff;
+}
+.transaction-service-subtitle {
+  font-family: "LexendLight";
+  font-size: 14px;
+  color: #888;
+  margin-top: 2px;
+}
+.transaction-date-cell {
+  padding: 18px 12px;
+  vertical-align: middle;
+}
+.transaction-date-main {
+  font-family: "LexendBold";
+  font-size: 16px;
+  color: #222;
+}
+.transaction-date-time {
+  font-family: "LexendLight";
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+}
+.transaction-id-cell {
+  padding: 18px 12px;
+  vertical-align: middle;
+  font-family: "LexendLight";
+  color: #444;
+  font-size: 15px;
+}
+.transaction-amount-cell {
+  padding: 18px 32px 18px 12px;
+  text-align: right;
+  vertical-align: middle;
+  font-family: "LexendBold";
+  font-size: 17px;
+}
+.transaction-amount-cell.negative {
+  color: #e74c3c;
+}
+.transaction-amount-cell.positive {
+  color: #007bff;
+}
+.transaction-status-cell {
+  padding: 18px 18px 18px 12px;
+  text-align: center;
+  vertical-align: middle;
+}
+.transaction-status-badge {
+  border-radius: 10px;
+  padding: 7px 22px;
+  font-family: "LexendBold";
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  display: inline-block;
+  min-width: 80px;
+}
+.status-success {
+  background: #eaf3ff;
+  color: #7b2ff2;
+}
+.status-pending {
+  background: #fff8e1;
+  color: #f39c12;
+}
+.status-failed {
+  background: #fdecea;
+  color: #e74c3c;
+}
+@media (max-width: 900px) {
+  .transaction-history-container h1 {
+    font-size: 22px !important;
+  }
+  .transaction-table {
+    min-width: 500px;
+  }
+}
+@media (max-width: 700px) {
+  .transaction-history-container {
+    padding: 8px 1vw !important;
+  }
+  .transaction-controls-row {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .transaction-table {
+    font-size: 14px;
+  }
+}
+@media (max-width: 500px) {
+  .transaction-table {
+    min-width: 320px;
+    font-size: 12px;
+  }
+  .transaction-table-th,
+  .transaction-table-row td {
+    padding: 10px 4px !important;
+  }
+  .transaction-service-title,
+  .transaction-service-subtitle,
+  .transaction-date-main,
+  .transaction-date-time,
+  .transaction-id-cell,
+  .transaction-amount-cell,
+  .transaction-status-badge {
+    font-size: 13px !important;
+  }
+}
+
+/* .nin-validation-purpose {
+  font-family: "LexendLight";
+  font-size: 16px;
+  color: #222;
+  resize: vertical;
+  min-height: 100px;
+  max-height: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px #e0e0e022;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #f8faff;
+  width: 100%;
+  box-sizing: border-box;
+  resize: vertical;
+  min-height: 100px;
+  max-height: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px #e0e0e022;
+  transition: border 0.2s, box-shadow 0.2s;
+  outline: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background: #f8faff;
+  width: 100%;
+  box-sizing: border-box;
+} */
+
+/* .service-cost-row {
+  font-family: "LexendBold";
+  font-size: 16px;
+  color: #222;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.service-cost-value {
+  font-family: "LexendBold";
+  color: #007bff;
+}
+.service-cost-value span {
+  font-family: "LexendBold";
+  color: #007bff;
+} */
+
+.setpin-field textarea,
+.sleek-textarea {
+  padding: 12px 14px;
+  border: 1.5px solid #e0eaff;
+  border-radius: 8px;
+  font-size: 1em;
+  font-family: "LexendLight", Arial, sans-serif;
+  background: #f8faff;
+  outline: none;
+  min-height: 80px;
+  transition: border 0.2s, box-shadow 0.2s;
+  resize: vertical;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(0, 123, 255, 0.04);
+}
+.setpin-field textarea:focus,
+.sleek-textarea:focus {
+  border: 1.5px solid #007bff;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.08);
+}
+
+.service-cost-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  background: #eaf3ff;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 1.13em;
+  font-family: "LexendBold", Arial, sans-serif;
+  color: #007bff;
+  margin-bottom: 18px;
+  box-shadow: 0 1px 6px rgba(0, 123, 255, 0.04);
+  width: fit-content;
+  min-width: 210px;
+}
+.service-cost-value {
+  color: #fff;
+  background: #007bff;
+  border-radius: 6px;
+  padding: 3px 14px;
+  font-size: 1.08em;
+  font-family: "LexendExtraBold", Arial, sans-serif;
+  margin-left: 6px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 1px 4px rgba(0, 123, 255, 0.1);
+}
+
+.setpin-form,
+.ninvalidation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.setpin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 0;
+}
+@media (max-width: 700px) {
+  .service-cost-row {
+    font-size: 1em;
+    padding: 8px 10px;
+    min-width: 140px;
+  }
+  .setpin-form,
+  .ninvalidation-form {
+    gap: 10px;
+  }
+  .setpin-field textarea,
+  .sleek-textarea {
+    font-size: 0.97em;
+    padding: 8px 8px;
+    min-height: 60px;
   }
 }
