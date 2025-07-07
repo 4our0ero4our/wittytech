@@ -106,7 +106,17 @@ export default function PersonalizationPage() {
                     </div>
                 </div>
                 {error && <div className="setpin-error">{error}</div>}
-                <button className="btn-primary-setpin" type="submit">Personalize NIN</button>
+                <button
+                    className="btn-primary-setpin"
+                    style={{
+                        opacity: SIMULATED_WALLET_BALANCE < SERVICE_COST ? 0.5 : 1,
+                        cursor: SIMULATED_WALLET_BALANCE < SERVICE_COST ? 'not-allowed' : 'pointer'
+                    }}
+                    disabled={SIMULATED_WALLET_BALANCE < SERVICE_COST}
+                    type="submit"
+                >
+                    Personalize NIN
+                </button>
             </form>
             {showSuccessOverlay && (
                 <div className="modal-backdrop" style={{ zIndex: 3000 }}>

@@ -181,7 +181,17 @@ export default function NinModificationPage() {
                     </div>
                 )}
                 {error && <div className="setpin-error">{error}</div>}
-                <button className="btn-primary-setpin" type="submit">Request Modification</button>
+                <button
+                    className="btn-primary-setpin"
+                    style={{
+                        opacity: SIMULATED_WALLET_BALANCE < selected.amount ? 0.5 : 1,
+                        cursor: SIMULATED_WALLET_BALANCE < selected.amount ? 'not-allowed' : 'pointer'
+                    }}
+                    disabled={SIMULATED_WALLET_BALANCE < selected.amount}
+                    type="submit"
+                >
+                    Request Modification
+                </button>
             </form>
             {showSuccessOverlay && (
                 <div className="modal-backdrop" style={{ zIndex: 3000 }}>

@@ -1,35 +1,41 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaIdCard } from "react-icons/fa";
+import { FaUserEdit } from "react-icons/fa";
 import FundWalletModal from "@/components/FundWalletModal";
 
-export default function NinValidationPage() {
-    const [nin, setNin] = useState("");
-    const [purpose, setPurpose] = useState("");
+export default function BVNVerificationPage() {
+    const [bvn, setBvn] = useState("");
     const [pin, setPin] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState(false);
     const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
     const [showFundModal, setShowFundModal] = useState(false);
     const router = useRouter();
 
-    const SIMULATED_WALLET_BALANCE = 7; // Simulate a low balance for demo
-    const SERVICE_COST = 14; // Adjust as needed
-
+    const handleBvnChange = (e) => {
+        // Only allow digits
+        const value = e.target.value.replace(/\D/g, "");
+        setBvn(value);
+        setError("");
+    };
+    const handlePinChange = (e) => {
+        setPin(e.target.value.replace(/\D/g, "").slice(0, 5));
+        setError("");
+    };
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (nin.length !== 11) {
-            setError("NIN Number must be exactly 11 digits.");
-            return;
-        }
-        if (!purpose) {
-            setError("Purpose for validating is required.");
+        if (bvn.length !== 11) {
+            setError("BVN must be exactly 11 digits.");
             return;
         }
         if (pin.length !== 5) {
-            setError("Transaction PIN must be 5 digits.");
+            setError("Transaction PIN must be exactly 5 digits.");
             return;
         }
+        setSuccess(true);
+        setBvn("");
+        setPin("");
         setError("");
         setShowSuccessOverlay(true);
     };
@@ -39,18 +45,21 @@ export default function NinValidationPage() {
         router.push("/dashboard");
     };
 
+    const SIMULATED_WALLET_BALANCE = 7; // Simulate a low balance for demo
+    const SERVICE_COST = 14;
+
     return (
         <div className="setpin-container">
             <div className="service-header sleek-service-header">
-                <div className="service-header-icon"><FaIdCard size={32} color="#007bff" /></div>
+                <div className="service-header-icon"><FaUserEdit size={32} color="#007bff" /></div>
                 <div>
-                    <h1 className="service-title">NIN Validation</h1>
-                    <div className="service-desc">Validate a National Identity Number (NIN) for authenticity and compliance.</div>
+                    <h1 className="service-title">BVN Verification</h1>
+                    <div className="service-desc">Verify your BVN by submitting your BVN number and Transaction PIN.</div>
                 </div>
             </div>
             <div className="service-cost-row">
                 <span>Service Cost: </span>
-                <span className="service-cost-value">$9</span>
+                <span className="service-cost-value">$12</span>
             </div>
             {SIMULATED_WALLET_BALANCE < SERVICE_COST && (
                 <div className="verifynin-alert">
@@ -64,18 +73,23 @@ export default function NinValidationPage() {
                     </button>
                 </div>
             )}
-            <form className="setpin-form ninvalidation-form" onSubmit={handleSubmit}>
+            <form className="setpin-form" onSubmit={handleSubmit}>
                 <div className="ninvalidation-row">
                     <div className="setpin-field">
-                        <label>NIN Number</label>
+                        <label>BVN Number</label>
                         <input
                             type="text"
-                            placeholder="Enter NIN Number"
-                            value={nin}
-                            onChange={e => setNin(e.target.value.replace(/\D/g, "").slice(0, 11))}
+                            placeholder="Enter BVN Number"
+                            value={bvn}
+                            onChange={handleBvnChange}
                             maxLength={11}
                             required
                         />
+                        {bvn.length > 0 && bvn.length < 11 && <div className="verifynin-subtext">
+                            <p style={{ color: 'red', fontFamily: 'LexendLight' }}>
+                                <b>Note:</b> BVN number must be exactly 11 digits.
+                            </p>
+                        </div>}
                     </div>
                     <div className="setpin-field">
                         <label>Transaction PIN</label>
@@ -83,23 +97,11 @@ export default function NinValidationPage() {
                             type="password"
                             placeholder="Enter 5-digit Transaction PIN"
                             value={pin}
-                            onChange={e => setPin(e.target.value.replace(/\D/g, "").slice(0, 5))}
+                            onChange={handlePinChange}
                             maxLength={5}
                             required
                         />
                     </div>
-                </div>
-                <div className="setpin-field">
-                    <label>Purpose for Validating</label>
-                    <textarea
-                        placeholder="State the purpose for this validation"
-                        value={purpose}
-                        onChange={e => setPurpose(e.target.value)}
-                        rows={3}
-                        required
-                        style={{ resize: "vertical" }}
-                        className="nin-validation-purpose"
-                    />
                 </div>
                 {error && <div className="setpin-error">{error}</div>}
                 <button
@@ -111,7 +113,7 @@ export default function NinValidationPage() {
                     disabled={SIMULATED_WALLET_BALANCE < SERVICE_COST}
                     type="submit"
                 >
-                    Validate NIN
+                    Verify BVN
                 </button>
             </form>
             {showSuccessOverlay && (
@@ -131,18 +133,16 @@ export default function NinValidationPage() {
                     </div>
                 </div>
             )}
-            {showFundModal && (
-                <FundWalletModal
-                    open={showFundModal}
-                    onClose={() => setShowFundModal(false)}
-                    account={{
-                        bank: "Palmpay",
-                        bankLogo: "/banks/gtbank.png",
-                        accountNumber: "1234567890",
-                        accountName: "Alex Doe"
-                    }}
-                />
-            )}
+            <FundWalletModal
+                open={showFundModal}
+                onClose={() => setShowFundModal(false)}
+                account={{
+                    bank: "Palmpay",
+                    bankLogo: "/banks/gtbank.png",
+                    accountNumber: "1234567890",
+                    accountName: "Alex Doe"
+                }}
+            />
         </div>
     );
 } 

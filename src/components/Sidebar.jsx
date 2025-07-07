@@ -6,7 +6,7 @@ import WittyTechLogo from '../../public/Images/WittyTechLogo.jpg'
 import { useGlobalState } from '../app/GlobalStateProvider';
 
 const navItems = [
-    { label: 'Dashboard', icon: <FaFileAlt />, href: '/dashboard' },
+    { label: 'DASHBOARD', icon: <FaFileAlt />, href: '/dashboard' },
     {
         label: 'AGGREGATORSHIP', icon: <FaUserCog />, dropdown: [
             { label: 'Settings', icon: <FaCog />, href: '/aggregatorship/settings' },
@@ -28,23 +28,24 @@ const navItems = [
         ]
     },
     {
-        label: 'BVN Services', icon: <FaIdCard />, dropdown: [
-            { label: 'BVN verification', icon: <FaIdBadge />, href: '/bvn/verification' },
-            { label: 'BVN modification', icon: <FaUserEdit />, href: '/bvn/modification' },
-            { label: 'BVN retrieval with phone number', icon: <FaMobileAlt />, href: '/bvn/retrieval-phone' },
-            { label: 'BVN personal license creation', icon: <FaUserPlus />, href: '/bvn/personal-license' },
-            { label: 'Android BVN licence', icon: <FaMobileAlt />, href: '/bvn/android-license' },
+        label: 'BVN SERVICES', icon: <FaIdCard />, dropdown: [
+            { label: 'BVN verification', icon: <FaIdBadge />, href: '/bvnservices/verification' },
+            { label: 'BVN modification', icon: <FaUserEdit />, href: '/bvnservices/modification' },
+            { label: 'BVN retrieval with phone number', icon: <FaMobileAlt />, href: '/bvnservices/bvnretrievalwp' },
+            { label: 'BVN License Onboarding Creation', icon: <FaUserPlus />, href: '/bvnservices/liscencecreation' },
+            // { label: 'Android BVN licence', icon: <FaMobileAlt />, href: '/bvnservices/abdroidbvnliscense' },
         ]
     },
     { label: 'BULK RECHARGE CARD PRINTING', icon: <FaMoneyCheckAlt />, href: '/bulk-recharge' },
-    { label: 'FUND WALLET', icon: <FaWallet />, href: '/fund-wallet' },
+    // { label: 'FUND WALLET', icon: <FaWallet />, href: '/fund-wallet' },
     {
         label: 'SECURITY', icon: <FaLock />, dropdown: [
             { label: 'Change Password', icon: <FaUserEdit />, href: '/changepassword' },
             { label: 'Set Transaction PIN', icon: <FaLock />, href: '/settransactionpin' },
         ]
     },
-    { label: "Transaction History", icon: <FaHistory />, href: '/transactionshistory' },
+    { label: 'TERMS AND CONDITIONS', icon: <FaFileAlt />, href: '/termsandconditions' },
+    { label: "TRANSACTION HISTORY", icon: <FaHistory />, href: '/transactionshistory' },
     // { label: 'SETTINGS', icon: <FaCog />, href: '/settings' },
     { label: 'LOG OUT', icon: <FaSignOutAlt />, href: '/logout' },
 ];
