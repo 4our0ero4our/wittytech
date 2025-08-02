@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaUserEdit, FaIdCard, FaWallet, FaUserPlus } from "react-icons/fa";
+import { FaUserEdit, FaIdCard, FaUserPlus } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 import FundWalletModal from "@/components/FundWalletModal";
 
 const MODIFICATION_OPTIONS = [
@@ -29,7 +30,7 @@ const MODIFICATION_OPTIONS = [
         label: "Address",
         value: "address",
         amount: 14,
-        icon: <FaWallet color="#007bff" size={22} />,
+        icon: <FaLocationDot color="#007bff" size={22} />,
         fields: [
             { label: "Old Address", name: "oldAddress", type: "text", placeholder: "Enter Old Address" },
             { label: "New Address", name: "newAddress", type: "text", placeholder: "Enter New Address" },
@@ -47,14 +48,29 @@ const MODIFICATION_OPTIONS = [
     },
 ];
 
+const ENROLLMENT_CENTERS = [
+    { value: '', label: 'Select Enrollment Center', price: 0 },
+    { value: 'AGENCY', label: 'AGENCY', price: 10000 },
+    { value: 'FIDELITY BANK', label: 'FIDELITY BANK', price: 10000 },
+    { value: 'FIRST BANK', label: 'FIRST BANK', price: 10000 },
+    { value: 'KEYSTONE BANK', label: 'KEYSTONE BANK', price: 10000 },
+    { value: 'HERITAGE BANK', label: 'HERITAGE BANK', price: 10000 },
+    { value: 'MACROFINANCE', label: 'MACROFINANCE', price: 10000 },
+    { value: 'UNITY BANK', label: 'UNITY BANK', price: 10000 },
+    { value: 'AGRIC BANK', label: 'AGRIC BANK', price: 10000 },
+    { value: 'LAPO BANK', label: 'LAPO BANK', price: 7000 },
+    { value: 'ENTERPRISE BANK', label: 'ENTERPRISE BANK', price: 7000 },
+];
+
 const SIMULATED_WALLET_BALANCE = 7; // Simulate a low balance for demo
 const HAS_PIN = true; // Simulate if user has set a PIN
 
-export default function NinModificationPage() {
+export default function BvnModificationPage() {
     const [selected, setSelected] = useState(MODIFICATION_OPTIONS[0]);
     const [form, setForm] = useState({});
     const [nin, setNin] = useState("");
     const [pin, setPin] = useState("");
+    const [enrollmentCenter, setEnrollmentCenter] = useState(ENROLLMENT_CENTERS[0]);
     const [showFundModal, setShowFundModal] = useState(false);
     const [error, setError] = useState("");
     const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
@@ -78,13 +94,22 @@ export default function NinModificationPage() {
         setPin(e.target.value.replace(/\D/g, "").slice(0, 5));
     };
 
+    const handleEnrollmentCenterChange = (e) => {
+        const center = ENROLLMENT_CENTERS.find(c => c.value === e.target.value);
+        setEnrollmentCenter(center || ENROLLMENT_CENTERS[0]);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!HAS_PIN) {
             setError("You must set a transaction PIN first.");
             return;
         }
-        if (SIMULATED_WALLET_BALANCE < selected.amount) {
+        if (!enrollmentCenter.value) {
+            setError("Please select an enrollment center.");
+            return;
+        }
+        if (SIMULATED_WALLET_BALANCE < enrollmentCenter.price) {
             setShowFundModal(true);
             return;
         }
@@ -117,15 +142,17 @@ export default function NinModificationPage() {
             <div className="service-header sleek-service-header">
                 <div className="service-header-icon"><FaUserEdit size={32} color="#007bff" /></div>
                 <div>
-                    <h1 className="service-title">NIN Modification</h1>
-                    <div className="service-desc">Select the NIN data you want to modify and fill in the required details.</div>
+                    <h1 className="service-title">BVN Modification</h1>
+                    <div className="service-desc">Select the BVN data you want to modify and fill in the required details.</div>
                 </div>
             </div>
             <div className="service-cost-row">
                 <span>Service Cost: </span>
-                <span className="service-cost-value">₦{selected.amount}</span>
+                <span className="service-cost-value">
+                    {enrollmentCenter.value ? `₦${enrollmentCenter.price.toLocaleString()}` : '--'}
+                </span>
             </div>
-            {SIMULATED_WALLET_BALANCE < selected.amount && (
+            {SIMULATED_WALLET_BALANCE < enrollmentCenter.price && (
                 <div className="verifynin-alert" style={{ marginTop: 18 }}>
                     <span>Insufficient balance! Please <b>fund your wallet</b> to continue.</span>
                     <button
@@ -157,13 +184,31 @@ export default function NinModificationPage() {
             </div>
 
             <form className="setpin-form" onSubmit={handleSubmit}>
+                <div className="ninvalidation-row">
+                    <div className="setpin-field" style={{ width: '100%' }}>
+                        <label>Enrollment Center</label>
+                        <select
+                            name="enrollmentCenter"
+                            value={enrollmentCenter.value}
+                            onChange={handleEnrollmentCenterChange}
+                            required
+                        >
+                            {ENROLLMENT_CENTERS.map(center => (
+                                <option key={center.value} value={center.value} data-price={center.price}>
+                                    {center.label}
+                                    {center.price ? ` (₦${center.price.toLocaleString()})` : ''}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
                 <div className="ninvalidation-row nin-grid-2x2">
                     <div className="setpin-field">
                         <label>NIN Number</label>
                         <input
                             type="text"
                             name="nin"
-                            placeholder="Enter NIN Number"
+                            placeholder="Enter BVN Number"
                             value={nin}
                             onChange={handleNinChange}
                             maxLength={11}
@@ -172,7 +217,7 @@ export default function NinModificationPage() {
                         {nin.length > 0 && nin.length < 11 && (
                             <div className="verifynin-subtext">
                                 <p style={{ color: 'red', fontFamily: 'LexendLight' }}>
-                                    <b>Note:</b> NIN must be exactly 11 digits.
+                                    <b>Note:</b> BVN must be exactly 11 digits.
                                 </p>
                             </div>
                         )}
@@ -221,10 +266,10 @@ export default function NinModificationPage() {
                 <button
                     className="btn-primary-setpin"
                     style={{
-                        opacity: SIMULATED_WALLET_BALANCE < selected.amount ? 0.5 : 1,
-                        cursor: SIMULATED_WALLET_BALANCE < selected.amount ? 'not-allowed' : 'pointer'
+                        opacity: SIMULATED_WALLET_BALANCE < enrollmentCenter.price ? 0.5 : 1,
+                        cursor: SIMULATED_WALLET_BALANCE < enrollmentCenter.price ? 'not-allowed' : 'pointer'
                     }}
-                    disabled={SIMULATED_WALLET_BALANCE < selected.amount}
+                    disabled={SIMULATED_WALLET_BALANCE < enrollmentCenter.price}
                     type="submit"
                 >
                     Request Modification

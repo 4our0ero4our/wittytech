@@ -69,7 +69,7 @@ export default function BVNRetrievalPage() {
             </div>
             <div className="service-cost-row">
                 <span>Service Cost: </span>
-                <span className="service-cost-value">$14</span>
+                <span className="service-cost-value">₦14</span>
             </div>
             {SIMULATED_WALLET_BALANCE < SERVICE_COST && (
                 <div className="verifynin-alert">

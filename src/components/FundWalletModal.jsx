@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaRegCopy } from "react-icons/fa";
+import { FaExternalLinkAlt, FaRegCopy } from "react-icons/fa";
 import PalmpayLogo from "../../public/Images/PalmpayLogo.png";
 
 export default function FundWalletModal({ open, onClose, account }) {
@@ -47,9 +47,12 @@ export default function FundWalletModal({ open, onClose, account }) {
                         Account Name: <b>{account.accountName}</b>
                     </div>
                 </div>
-                <div style={{ fontSize: "0.95em", color: "#555" }}>
+                <div style={{ fontSize: "0.95em", color: "#555", marginBottom: 16 }}>
                     Transfer funds to this account to instantly top up your wallet.
                 </div>
+                <a href="/termsandconditions" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", color: "#007bff", fontSize: "0.95em", marginTop: '20px', fontFamily: "LexendExtraBold", display: "flex", alignItems: "center", gap: 4, justifyContent: "center" }}>
+                    Read the Terms and Conditions <FaExternalLinkAlt />
+                </a>
             </div>
         </div>
     );

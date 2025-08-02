@@ -50,7 +50,7 @@ export default function NinValidationPage() {
             </div>
             <div className="service-cost-row">
                 <span>Service Cost: </span>
-                <span className="service-cost-value">$9</span>
+                <span className="service-cost-value">₦9</span>
             </div>
             {SIMULATED_WALLET_BALANCE < SERVICE_COST && (
                 <div className="verifynin-alert">

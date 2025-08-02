@@ -12,7 +12,7 @@ const navItems = [
             { label: 'Settings', icon: <FaCog />, href: '/aggregatorship/settings' },
             { label: 'Clients Management', icon: <FaUsers />, href: '/aggregatorship/clients' },
             { label: 'Clients Transactions', icon: <FaMoneyCheckAlt />, href: '/aggregatorship/transactions' },
-            { label: 'Clients Fundings and Profits Record', icon: <FaWallet />, href: '/aggregatorship/fundings-profits' },
+            { label: 'Clients Fundings and Profits Record', icon: <FaWallet />, href: '/aggregatorship/fundingsandprofits' },
         ]
     },
     {
@@ -36,18 +36,16 @@ const navItems = [
             // { label: 'Android BVN licence', icon: <FaMobileAlt />, href: '/bvnservices/abdroidbvnliscense' },
         ]
     },
-    { label: 'BULK RECHARGE CARD PRINTING', icon: <FaMoneyCheckAlt />, href: '/bulk-recharge' },
+    { label: 'BULK RECHARGE CARD PRINTING', icon: <FaMoneyCheckAlt />, href: '/bulkrecharge' },
     // { label: 'FUND WALLET', icon: <FaWallet />, href: '/fund-wallet' },
     {
-        label: 'SECURITY', icon: <FaLock />, dropdown: [
-            { label: 'Change Password', icon: <FaUserEdit />, href: '/changepassword' },
-            { label: 'Set Transaction PIN', icon: <FaLock />, href: '/settransactionpin' },
-        ]
+        label: 'Set Transaction PIN', icon: <FaLock />, href: '/settransactionpin'
     },
     { label: 'TERMS AND CONDITIONS', icon: <FaFileAlt />, href: '/termsandconditions' },
     { label: "TRANSACTION HISTORY", icon: <FaHistory />, href: '/transactionshistory' },
     // { label: 'SETTINGS', icon: <FaCog />, href: '/settings' },
-    { label: 'LOG OUT', icon: <FaSignOutAlt />, href: '/logout' },
+    { label: 'LOG OUT', icon: <FaSignOutAlt />, href: '/signin' },
+
 ];
 
 const Sidebar = () => {

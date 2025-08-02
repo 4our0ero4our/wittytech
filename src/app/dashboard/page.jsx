@@ -13,21 +13,30 @@ import { FaRegCopy } from "react-icons/fa";
 import { useState } from "react";
 import Modal from "../../components/Modal";
 import IntroModal from "../../components/IntroModal";
-
+import {
+    FaFileAlt, FaUserCog, FaUsers, FaMoneyCheckAlt, FaWallet, FaCog, FaSignOutAlt, FaIdCard, FaIdBadge, FaUserShield, FaUserEdit, FaUserCheck, FaUserTimes, FaSearch, FaUserPlus, FaMobileAlt, FaLock, FaHistory
+} from 'react-icons/fa';
 
 const quickActions = [
-    { label: "NIN Verification", img: NIMCImage },
-    { label: "NIN With Phone", img: NIMCImage },
-    { label: "BVN Verification", img: BVNImage },
-    { label: "BVN CARD", img: BVNImage },
-    { label: "IPE Clearance", img: BvnVerificationImg },
-    { label: "PIN Set", img: SettingsImg },
-    { label: "Validation", img: BvnVerificationImg },
-    { label: "Modification", img: BvnVerificationImg },
-    { label: "Transactions", img: BvnVerificationImg },
-    { label: "Verifications", img: BvnVerificationImg },
-    { label: "Instant IPE Clearance", img: BvnVerificationImg },
-    { label: "Instant Validations", img: BvnVerificationImg },
+    { label: 'DASHBOARD', icon: <FaFileAlt />, href: '/dashboard' },
+    { label: 'Settings', icon: <FaCog />, href: '/aggregatorship/settings' },
+    { label: 'Clients Management', icon: <FaUsers />, href: '/aggregatorship/clients' },
+    { label: 'Clients Transactions', icon: <FaMoneyCheckAlt />, href: '/aggregatorship/transactions' },
+    { label: 'Clients Fundings and Profits Record', icon: <FaWallet />, href: '/aggregatorship/fundings-profits' },
+    { label: 'NIN verification', icon: <FaIdBadge />, href: '/ninservices/verifynin' },
+    { label: 'NIN personalisation', icon: <FaUserEdit />, href: '/ninservices/personalisation' },
+    { label: 'IPE clearance', icon: <FaUserShield />, href: '/ninservices/ipeclearance' },
+    { label: 'NIN modification', icon: <FaUserEdit />, href: '/ninservices/modifications' },
+    { label: 'NIN validation', icon: <FaUserCheck />, href: '/ninservices/validation' },
+    { label: 'vpn personal user creation', icon: <FaUserPlus />, href: '/ninservices/vpnuser' },
+    { label: 'BVN verification', icon: <FaIdBadge />, href: '/bvnservices/verification' },
+    { label: 'BVN modification', icon: <FaUserEdit />, href: '/bvnservices/modification' },
+    { label: 'BVN retrieval with phone number', icon: <FaMobileAlt />, href: '/bvnservices/bvnretrievalwp' },
+    { label: 'BVN License Onboarding Creation', icon: <FaUserPlus />, href: '/bvnservices/liscencecreation' },
+    { label: 'BULK RECHARGE CARD PRINTING', icon: <FaMoneyCheckAlt />, href: '/bulkrecharge' },
+    { label: 'Set Transaction PIN', icon: <FaLock />, href: '/settransactionpin' },
+    { label: 'TERMS AND CONDITIONS', icon: <FaFileAlt />, href: '/termsandconditions' },
+    { label: 'TRANSACTION HISTORY', icon: <FaHistory />, href: '/transactionshistory' },
 ];
 
 const user = {
@@ -48,7 +57,7 @@ function AccountNumberRow({ accountNumber, copyColor }) {
 
     return (
         <div style={{ display: "flex", flexDirection: 'row', alignItems: "center", gap: 8 }}>
-            <span>{accountNumber}</span>
+            <span style={{ fontFamily: 'LexendLight' }}>{accountNumber}</span>
             <button
                 onClick={handleCopy}
                 style={{
@@ -143,7 +152,7 @@ export default function DashboardPage() {
             <div className="dashboard-container">
                 <section className="dashboard-header">
                     <h1>Welcome to WittyTech Platform, {user.name}</h1>
-                    <p className="referral-link">Your referral link: <AccountNumberRow accountNumber={user.referral} copyColor='#007bff' /></p>
+                    <p className="referral-link">Your referral link:</p> <AccountNumberRow accountNumber={user.referral} copyColor='#007bff' />
                     <div className="dashboard-actions">
                         <button className="btn-primary" onClick={() => setShowFundModal(true)}>
                             Fund Wallet
@@ -198,10 +207,10 @@ export default function DashboardPage() {
                     <h2>Quick Actions</h2>
                     <div className="quick-actions-grid">
                         {quickActions.map((action) => (
-                            <div className="quick-action-card" key={action.label}>
-                                <img src={action.img.src} alt={action.label} />
+                            <a className="quick-action-card" key={action.label} href={action.href} style={{ textDecoration: 'none' }}>
+                                <span style={{ fontSize: 38, marginBottom: 10 }}>{action.icon}</span>
                                 <span>{action.label}</span>
-                            </div>
+                            </a>
                         ))}
                     </div>
                 </section>

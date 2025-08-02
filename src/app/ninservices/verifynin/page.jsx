@@ -90,7 +90,7 @@ export default function VerifyNINPage() {
             </div>
             <div className="service-cost-row">
                 <span>Service Cost: </span>
-                <span className="service-cost-value">${selected.amount}</span>
+                <span className="service-cost-value">₦{selected.amount}</span>
             </div>
             {SIMULATED_WALLET_BALANCE < selected.amount && (
                 <div className="verifynin-alert">
@@ -215,7 +215,7 @@ export default function VerifyNINPage() {
                     )}
                     <div className="verifynin-summary">
                         <span>Selected Verification Type: <b>{selected.label}</b></span>
-                        <span>Amount to be charged: <b>${selected.amount}</b></span>
+                        <span>Amount to be charged: <b>₦{selected.amount}</b></span>
                     </div>
                     <button
                         className="btn-primary-verify"
